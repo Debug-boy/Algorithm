@@ -123,6 +123,7 @@ namespace infinity {
 
     public:
         MStackPlus() {
+
         }
 
         void push(const T& data) {
