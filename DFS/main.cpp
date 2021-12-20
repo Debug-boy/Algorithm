@@ -69,7 +69,7 @@ bool dfs(const Point& begin_pos, const Point& end_pos, SceneMap& sceneMap) {
 				mPointStack.push(iterator);
 				openList.push_back(iterator);//将现在所找到的点全部加入到欲走点的栈列表
 				firstNormalAppend = true;
-				SleepEx(100, false);
+				SleepEx(10, false);
 				break;//只要找到一个点，就跳出对这个点进行搜索，保证线路的最快可行性
 			}
 		}
@@ -92,9 +92,9 @@ bool dfs(const Point& begin_pos, const Point& end_pos, SceneMap& sceneMap) {
 
 int main(int argc, char* argv[], char* envp[]) {
 
-	static const unsigned int scene_width = 20;
-	static const unsigned int scene_height = 15;
-	static const unsigned int scene_boxSize = 50;
+	static const unsigned int scene_width = 40;
+	static const unsigned int scene_height = 20;
+	static const unsigned int scene_boxSize = 30;
 	
 	initgraph(scene_width * scene_boxSize + 10, scene_height * scene_boxSize + 10);
 
