@@ -46,7 +46,8 @@ bool dfs(const Point& begin_pos, const Point& end_pos, SceneMap& sceneMap) {
 			MessageBox(GetHWnd(), "find","Success", MB_OK);
 			return true;
 		}
-		unsigned int appendCount = 0;
+
+		bool firstNormalAppend = false;
 		for (Point& iterator : aroundList) 
 		{
 			//因为aroundList全是可走的数据，就加入的开放列表，全部标记为走过
@@ -67,14 +68,15 @@ bool dfs(const Point& begin_pos, const Point& end_pos, SceneMap& sceneMap) {
 
 				mPointStack.push(iterator);
 				openList.push_back(iterator);//将现在所找到的点全部加入到欲走点的栈列表
-				++appendCount;
+				firstNormalAppend = true;
 				SleepEx(100, false);
 				break;//只要找到一个点，就跳出对这个点进行搜索，保证线路的最快可行性
 			}
 		}
 
-		//当对开放列表加入计数为0，那说明当前栈顶点是没有用的，先加入到回溯列表，在pop掉；
-		if (!appendCount) {
+		//如果没有一次正确的添加到栈顶数据，那说明当前当前栈顶点获取的周围是没有用的，也就是说当前栈顶不可取
+		//先将可可取的点加入到回溯列表，在pop掉；
+		if (!firstNormalAppend) {
 			backList.push_back(currentPoint);
 			mPointStack.pop();
 			continue;

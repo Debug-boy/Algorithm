@@ -163,7 +163,7 @@ namespace infinity {
 
 						if (!findVector<Point>(retain, target_position)) {
 							int r = rand() % (m_width / 2) + 1;
-							if (r % (m_width / 2) == 0)
+							if (r % 3 == 0)
 								setState(target_position,STATE_TYPE::bar);
 						}
 					}
