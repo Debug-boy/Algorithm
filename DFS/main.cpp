@@ -43,6 +43,10 @@ bool dfs(const Point& begin_pos, const Point& end_pos, SceneMap& sceneMap) {
 				}
 			}
 
+			//for (const auto& point : backList) {
+			//	sceneMap.redner(point, CYAN);
+			//}
+
 			MessageBox(GetHWnd(), "find","Success", MB_OK);
 			return true;
 		}
