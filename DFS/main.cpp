@@ -33,6 +33,7 @@ bool dfs(const Point& begin_pos, const Point& end_pos, SceneMap& sceneMap) {
 			mPointStack.push(end_pos);
 
 			//成功找到后渲染路线
+			setlinestyle(PS_SOLID, 4);
 			setlinecolor(YELLOW);
 			while (!mPointStack.empty()) {
 				auto offset = sceneMap.boxSize() / 2;
@@ -47,7 +48,7 @@ bool dfs(const Point& begin_pos, const Point& end_pos, SceneMap& sceneMap) {
 			//	sceneMap.redner(point, CYAN);
 			//}
 
-			MessageBox(GetHWnd(), "find","Success", MB_OK);
+			MessageBox(GetHWnd(), "find","DFS:success", MB_OK);
 			return true;
 		}
 
@@ -73,7 +74,7 @@ bool dfs(const Point& begin_pos, const Point& end_pos, SceneMap& sceneMap) {
 				mPointStack.push(iterator);
 				openList.push_back(iterator);//将现在所找到的点全部加入到欲走点的栈列表
 				firstNormalAppend = true;
-				SleepEx(10, false);
+				//SleepEx(10, false);
 				break;//只要找到一个点，就跳出对这个点进行搜索，保证线路的最快可行性
 			}
 		}
@@ -98,7 +99,7 @@ int main(int argc, char* argv[], char* envp[]) {
 
 	static const unsigned int scene_width = 40;
 	static const unsigned int scene_height = 20;
-	static const unsigned int scene_boxSize = 30;
+	static const unsigned int scene_boxSize = 20;
 	
 	initgraph(scene_width * scene_boxSize + 10, scene_height * scene_boxSize + 10);
 
@@ -110,7 +111,7 @@ int main(int argc, char* argv[], char* envp[]) {
 	scene_map.setRandBar(vector<Point>({ self_begin, self_end }));
 
 	if(!dfs(self_begin, self_end, scene_map))
-		MessageBox(GetHWnd(), "not found!", "fail!", MB_OK);
+		MessageBox(GetHWnd(), "not found!", "DFS:fail!", MB_OK);
 
 	getchar();
 	closegraph();
