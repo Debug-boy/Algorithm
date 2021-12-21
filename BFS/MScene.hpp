@@ -23,6 +23,7 @@ namespace infinity {
 			int x;
 			int y;
 			int weight;
+			MScene::Point *previous;
 
 			Point() :x(), y(), weight() {}
 			
