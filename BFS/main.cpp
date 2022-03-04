@@ -40,8 +40,6 @@ bool bfs(const Point& begin_position, const Point& end_position, SceneMap& scene
 				line(line_begin.x, line_begin.y, line_end.x, line_end.y);
 				visitPointOpenList.front() = (*visitPointOpenList.front().previous);//回溯上一个节点
 			}
-
-			MessageBox(GetHWnd(), "find!", "BFS:success!", MB_OK);
 			return true;
 		}
 
@@ -82,7 +80,7 @@ int main(int argc, char* argv, char* envp) {
 
 	static const unsigned int scene_width = 40;
 	static const unsigned int scene_height = 20;
-	static const unsigned int scene_boxSize = 30;
+	static const unsigned int scene_boxSize = 20;
 
 	initgraph(scene_width * scene_boxSize + 10, scene_height * scene_boxSize + 10);
 
