@@ -10,9 +10,9 @@ using namespace infinity::MScene;
 
 
 int distance(const Point& p, const Point& q) {
-	int dertx = q.x - p.x;
-	int derty = q.y - p.y;
-	return abs(dertx) + abs(derty);
+	int delta_x = q.x - p.x;
+	int derta_y = q.y - p.y;
+	return abs(delta_x) + abs(derta_y);
 }
 
 bool bfs(const Point& begin_position, const Point& end_position, SceneMap& sceneMap) {
@@ -33,8 +33,7 @@ bool bfs(const Point& begin_position, const Point& end_position, SceneMap& scene
 			setlinestyle(PS_SOLID, 4);
 			setlinecolor(YELLOW);
 			while (visitPointOpenList.front().previous) {
-				auto offset = sceneMap.boxSize() / 2;
-
+				auto offset = sceneMap.boxSize() >> 1;
 				Point line_begin = sceneMap.getRenderPosition((*visitPointOpenList.front().previous)) + Point(offset, offset);
 				Point line_end = sceneMap.getRenderPosition(visitPointOpenList.front()) + Point(offset, offset);
 
@@ -48,24 +47,25 @@ bool bfs(const Point& begin_position, const Point& end_position, SceneMap& scene
 
 		for (auto& iteratorVisited : aroundNormalvisit) {
 
-			const Point currentFront = visitPointOpenList.front();
+			const Point &currentFront = visitPointOpenList.front();
 
-			//record previous node; 
-			auto lpNewPoint = new Point(currentFront.x, currentFront.y, currentFront.weight);
+			//把 当前的队首节点重新动态生成拷贝一份，因为访问的周围的节点都是队首节点的子节点
+			auto lpNewPoint = new Point(currentFront.x, currentFront.y, currentFront.weight,currentFront.previous);
 			makeHeapList.push_back(lpNewPoint);
-			lpNewPoint->previous = currentFront.previous;
 
-			iteratorVisited.previous = lpNewPoint;
-			iteratorVisited.weight = visitPointOpenList.front().weight + 1;
+			//lpNewPoint->previous = currentFront.previous;//将新拷贝出来的队首节点 重新指向 父节点(当前队首节点)
+
+			iteratorVisited.previous = lpNewPoint;//将获取到的周围可访问节点的父节点设置为 new出来的节点
+			iteratorVisited.weight = currentFront.weight + 1;
 
 			visitPointOpenList.push(iteratorVisited);
 
 			BeginBatchDraw();
 			sceneMap.setState(iteratorVisited, SceneMap::STATE_TYPE::visit);
-			sceneMap.render();//先渲染整张地图
-			sceneMap.redner(iteratorVisited, BLUE);//渲染迭代访问的四周点
+			sceneMap.render();
+			sceneMap.redner(iteratorVisited, BLUE);
 
-			sceneMap.redner(begin_position, GREEN);//单独对开始点和结束点渲染
+			sceneMap.redner(begin_position, GREEN);
 			sceneMap.redner(end_position, GREEN);
 			EndBatchDraw();
 			//SleepEx(100, false);
@@ -73,8 +73,7 @@ bool bfs(const Point& begin_position, const Point& end_position, SceneMap& scene
 		visitPointOpenList.pop();
 	}
 	//all make alloc free!
-	for (auto lpNewPoint : makeHeapList)
-		delete lpNewPoint;
+	for (auto lpNewPoint : makeHeapList)delete lpNewPoint;
 	return false;
 }
 

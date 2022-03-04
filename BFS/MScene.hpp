@@ -27,10 +27,11 @@ namespace infinity {
 
 			Point() :x(), y(), weight() {}
 			
-			Point(int x, int y, int weight = 0) {
+			Point(int x, int y, int weight = 0, Point* father = nullptr) {
 				this->x = x;
 				this->y = y;
 				this->weight = 0;
+				this->previous = father;
 			}
 
 			void set(int re_x, int re_y, int re_weight) {
@@ -53,6 +54,32 @@ namespace infinity {
 
 			Point operator - (const Point& point) const {
 				return Point(this->x - point.x, this->y - point.y);
+			}
+
+			Point operator ++ () {
+				++this->x;
+				++this->y;
+				return *this;
+			}
+
+			Point operator -- () {
+				--this->x;
+				--this->y;
+				return *this;
+			}
+
+			Point operator ++ (int) {
+				Point temp = *this;
+				++this->x;
+				++this->y;
+				return temp;
+			}
+
+			Point operator -- (int) {
+				Point temp = *this;
+				--this->x;
+				--this->y;
+				return temp;
 			}
 
 		};
@@ -157,6 +184,10 @@ namespace infinity {
 			void setState(const Point& scenePoint, const unsigned int& state) {
 				if (checkPointExist(scenePoint))
 					m_data[scenePoint.x][scenePoint.y].setState(state);
+			}
+
+			void recoverState(const Point& scenePoint) {
+				m_data[scenePoint.x][scenePoint.y].setState(STATE_TYPE::nromal);
 			}
 
 			//±£¡Ùµ„
